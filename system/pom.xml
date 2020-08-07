@@ -41,6 +41,11 @@
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
 
+        <!-- 添加本地server依赖 -->
+        <dependency>
+            <groupId>com.huanghao</groupId>
+            <artifactId>server</artifactId>
+        </dependency>
 
     </dependencies>
 

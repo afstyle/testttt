@@ -1,7 +1,7 @@
 package com.huanghao.system.controller;
 
-import com.huanghao.system.domain.Test;
-import com.huanghao.system.service.TestService;
+import com.huanghao.server.domain.Test;
+import com.huanghao.server.service.TestService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
