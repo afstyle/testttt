@@ -1,24 +1,21 @@
-# admin
+# view-ui-project
 
-## Project setup
-```
+This project is build for Vue.js 2 + vue-router + webpack2 + View UI (iView) 4, just install and run.
+
+## Install
+```bush
+// install dependencies
 npm install
 ```
-
-### Compiles and hot-reloads for development
+## Run
+### Development
+```bush
+// For the first time, run init to create index.html
+npm run init
+npm run dev
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
+### Production(Build)
+```bush
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
