@@ -1,12 +1,8 @@
 package com.huanghao.server.domain;
 
-/**
- * @author HuangHao
- * @date 2020/8/7 14:43
- */
 public class Test {
-
     private String id;
+
     private String name;
 
     public String getId() {
@@ -23,5 +19,17 @@ public class Test {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append("]");
+        return sb.toString();
     }
 }
