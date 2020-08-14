@@ -11,7 +11,8 @@ const routers = [
         component: (resolve) => require(['./views/login/login.vue'], resolve)
     },
     {
-        path: '/admin',
+        path: '/',
+        name: 'admin',
         meta: {
             title: '首页'
         },
@@ -19,12 +20,14 @@ const routers = [
         children: [
             {
                 path: 'welcome', // 子路由的配置不要用'/'开头！！！
+                name: 'welcome',
                 meta: {
                     title: '欢迎'
                 },
                 component: (resolve) => require(['./views/admin/welcome.vue'], resolve)
             },{
                 path: 'business/chapter', // 子路由的配置不要用'/'开头！！！
+                name: 'business/chapter',
                 meta: {
                     title: '大目录管理'
                 },

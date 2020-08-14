@@ -232,9 +232,9 @@
 
                 let menuClick = this.menuList.find(menu => menu.route === route || (menu.subMenu && menu.subMenu.find(submenu => submenu.route === route)));
                 if (menuClick.subMenu) {
-                    routePath =  '/admin/' + menuClick.route + '/' + menuClick.subMenu.find(submenu => submenu.route === route).route;
+                    routePath =  '/' + menuClick.route + '/' + menuClick.subMenu.find(submenu => submenu.route === route).route;
                 } else {
-                    routePath =  '/admin/' + menuClick.route;
+                    routePath =  '/' + menuClick.route;
                 }
                 if (routePath && routePath.length > 0) {
                     console.log('跳转至路由：' + routePath)
