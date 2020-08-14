@@ -2,10 +2,13 @@ package com.huanghao.server.service;
 
 import com.huanghao.server.domain.Chapter;
 import com.huanghao.server.domain.ChapterExample;
+import com.huanghao.server.dto.ChapterDto;
 import com.huanghao.server.mapper.ChapterMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,9 +21,15 @@ public class ChapterService {
     @Resource
     private ChapterMapper chapterMapper;
 
-    public List<Chapter> list() {
+    public List<ChapterDto> list() {
+        ArrayList<ChapterDto> chapterDtoList = new ArrayList<>();
         ChapterExample chapterExample = new ChapterExample();
-        chapterExample.setOrderByClause("id desc");
-        return chapterMapper.selectByExample(chapterExample);
+        List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
+        for (Chapter chapter : chapterList) {
+            ChapterDto chapterDto = new ChapterDto();
+            BeanUtils.copyProperties(chapter, chapterDto);
+            chapterDtoList.add(chapterDto);
+        }
+        return chapterDtoList;
     }
 }

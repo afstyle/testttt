@@ -1,6 +1,7 @@
-package com.huanghao.business.controller;
+package com.huanghao.business.controller.admin;
 
 import com.huanghao.server.domain.Chapter;
+import com.huanghao.server.dto.ChapterDto;
 import com.huanghao.server.service.ChapterService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import java.util.List;
  * @date 2020/8/7 0:24
  */
 @RestController
+@RequestMapping("/admin")
 public class ChapterController {
 
 
@@ -20,7 +22,7 @@ public class ChapterController {
     private ChapterService chapterService;
 
     @RequestMapping("/chapter")
-    public List<Chapter> chapter() {
+    public List<ChapterDto> chapter() {
         return chapterService.list();
     }
 }
