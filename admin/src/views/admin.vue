@@ -2,10 +2,10 @@
     <div class="layout">
         <Layout style="height: 100%;">
             <Header>
-                <Menu mode="horizontal" theme="dark">
+                <Menu mode="horizontal" theme="dark" @on-select="navClick">
                     <div class="layout-logo"></div>
                     <div class="layout-nav">
-                        <MenuItem name="1" @on-select="logout">
+                        <MenuItem name="logout" >
                             <Icon type="ios-person" />
                             用户登出
                         </MenuItem>
@@ -30,35 +30,17 @@
             </Header>
             <Layout>
                 <Sider hide-trigger :style="{background: '#fff'}">
-                    <Menu active-name="0" theme="light" width="auto" :open-names="[]">
-                        <MenuItem name="0">
-                            <Icon type="ios-navigate"></Icon>
-                            欢迎
+                    <Menu :active-name="menuActiveName" theme="light" width="auto" v-for="(item, index) in menuList" @on-select="menuClick">
+                        <MenuItem v-if="!item.subMenu" :name="item.route">
+                            <Icon :type="item.icon"></Icon>
+                            {{ item.name }}
                         </MenuItem>
-                        <Submenu name="1">
+                        <Submenu v-else :name="item.route">
                             <template slot="title">
-                                <Icon type="ios-navigate"></Icon>
-                                Item 1
+                                <Icon :type="item.icon"></Icon>
+                                {{ item.name }}
                             </template>
-                            <MenuItem name="1-1">Option 1</MenuItem>
-                            <MenuItem name="1-2">Option 2</MenuItem>
-                            <MenuItem name="1-3">Option 3</MenuItem>
-                        </Submenu>
-                        <Submenu name="2">
-                            <template slot="title">
-                                <Icon type="ios-keypad"></Icon>
-                                Item 2
-                            </template>
-                            <MenuItem name="2-1">Option 1</MenuItem>
-                            <MenuItem name="2-2">Option 2</MenuItem>
-                        </Submenu>
-                        <Submenu name="3">
-                            <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
-                                Item 3
-                            </template>
-                            <MenuItem name="3-1">Option 1</MenuItem>
-                            <MenuItem name="3-2">Option 2</MenuItem>
+                            <MenuItem :name="subMenu.route" v-for="subMenu in item.subMenu"> {{ subMenu.name }} </MenuItem>
                         </Submenu>
                     </Menu>
                 </Sider>
@@ -141,6 +123,25 @@
     export default {
         data () {
             return {
+                menuActiveName: '',
+                menuList:[
+                    {
+                        route: 'welcome',
+                        name: '首页',
+                        icon: 'ios-navigate',
+                    },
+                    {
+                        route: 'business',
+                        name: '业务管理',
+                        icon: 'ios-keypad',
+                        subMenu: [
+                            {
+                                route: 'chapter',
+                                name: '大章管理'
+                            },
+                        ]
+                    },
+                ],
                 messageBaseList: [
                     {
                         icon: 'md-mail',
@@ -195,7 +196,7 @@
                         blankTarget: true
                     }
                 ],
-                copyright: 'Copyright © 2020 Afstyle'
+                copyright: 'Copyright © 2020 AfSty1e'
             }
         },
         computed: {
@@ -222,8 +223,28 @@
             }
         },
         methods: {
-            logout() {
-                this.$router.push('/login');
+            menuClick(route) {
+                if (!route) {
+                    return;
+                }
+                this.menuActiveName = route;
+                let routePath = '';
+
+                let menuClick = this.menuList.find(menu => menu.route === route || (menu.subMenu && menu.subMenu.find(submenu => submenu.route === route)));
+                if (menuClick.subMenu) {
+                    routePath =  '/admin/' + menuClick.route + '/' + menuClick.subMenu.find(submenu => submenu.route === route).route;
+                } else {
+                    routePath =  '/admin/' + menuClick.route;
+                }
+                if (routePath && routePath.length > 0) {
+                    console.log('跳转至路由：' + routePath)
+                    this.$router.push(routePath);
+                }
+            },
+            navClick(name) {
+                if (name && name === 'logout') {
+                    this.$router.push('/login');
+                }
             },
             handleLoadMore (tab) {
                 this.loadMore(tab.name);
@@ -247,6 +268,7 @@
             }
         },
         mounted () {
+            this.menuActiveName = this.menuList[0].route;
             this.messageList = [...this.messageBaseList];
             this.followList = [...this.followBaseList];
             this.todoList = [...this.todoBaseList];

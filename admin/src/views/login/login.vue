@@ -24,13 +24,13 @@
         methods: {
             handleSubmit (valid, { mobile, captcha }) {
                 if (valid) {
-                    this.$router.push('/admin');
+                    this.$router.push('/admin/welcome');
                     /*this.$Modal.info({
                         title: '输入的内容如下：',
                         content: 'mobile: ' + mobile + ' | captcha: ' + captcha
                     });*/
                 } else {
-                    this.$router.push('/admin');
+                    this.$router.push('/admin/welcome');
                 }
             },
             handleGetCaptcha () {

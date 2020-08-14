@@ -23,7 +23,13 @@ const routers = [
                     title: '欢迎'
                 },
                 component: (resolve) => require(['./views/admin/welcome.vue'], resolve)
-            }
+            },{
+                path: 'business/chapter', // 子路由的配置不要用'/'开头！！！
+                meta: {
+                    title: '大目录管理'
+                },
+                component: (resolve) => require(['./views/admin/chapter.vue'], resolve)
+            },
         ]
     },
 ];
