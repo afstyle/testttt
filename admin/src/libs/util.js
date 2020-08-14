@@ -2,7 +2,7 @@ let util = {
 
 };
 util.title = function (title) {
-    title = title ? title + ' - Home' : '后台管理';
+    title = title ? title + ' - Admin' : '后台管理系统';
     window.document.title = title;
 };
 

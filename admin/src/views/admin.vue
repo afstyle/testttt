@@ -227,10 +227,11 @@
                 if (!route) {
                     return;
                 }
-                this.menuActiveName = route;
+                let _this = this;
+                _this.menuActiveName = route;
                 let routePath = '';
 
-                let menuClick = this.menuList.find(menu => menu.route === route || (menu.subMenu && menu.subMenu.find(submenu => submenu.route === route)));
+                let menuClick = _this.menuList.find(menu => menu.route === route || (menu.subMenu && menu.subMenu.find(submenu => submenu.route === route)));
                 if (menuClick.subMenu) {
                     routePath =  '/' + menuClick.route + '/' + menuClick.subMenu.find(submenu => submenu.route === route).route;
                 } else {
@@ -238,7 +239,7 @@
                 }
                 if (routePath && routePath.length > 0) {
                     console.log('跳转至路由：' + routePath)
-                    this.$router.push(routePath);
+                    _this.$router.push(routePath);
                 }
             },
             navClick(name) {

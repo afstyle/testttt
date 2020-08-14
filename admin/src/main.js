@@ -7,10 +7,12 @@ import Util from './libs/util';
 import App from './app.vue';
 import 'view-design/dist/styles/iview.css';
 import './libs/iview-pro/iview-pro.css';
+import axios from 'axios';
 
 Vue.use(VueRouter);
 Vue.use(ViewUI);
 Vue.use(iViewPro);
+Vue.prototype.$ajax = axios;
 
 // 路由配置
 const RouterConfig = {
