@@ -1,11 +1,17 @@
 <template>
   <div>
-    <Table max-height="500" :columns="columns" :data="tableData"></Table>
+    <Row type="flex" justify="end" style="margin: 10px 0 20px;">
+      <Button type="primary" icon="ios-search" @click="list">查 询</Button>
+    </Row>
+    <Table max-height="650" :columns="columns" :data="tableData"></Table>
+    <Pagination ref="page" v-bind:list="list" />
   </div>
 </template>
 <script>
+  import Pagination from "../components/commons/pagination";
   export default {
       name: 'chapter',
+      components: { Pagination },
       mounted() {
           let _this = this;
           _this.list();
@@ -35,14 +41,15 @@
       },
       methods: {
           list() {
-            let _this = this;
-            _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list', {
-                page: 1,
-                size: 1
-            }).then((response)=>{
-                console.log('result = ', response);
-                _this.tableData = response.data.list;
-            })
+              let _this = this;
+              _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list', {
+                  page: _this.$refs.page.pageNum,
+                  size: _this.$refs.page.pageSize
+              }).then((response)=>{
+                  console.log('result = ', response);
+                  _this.tableData = response.data.list;
+                  _this.$refs.page.total = response.data.total;
+              })
           },
       }
   }
