@@ -4,12 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.huanghao.server.domain.Chapter;
 import com.huanghao.server.domain.ChapterExample;
-import com.huanghao.server.dto.ChapterDto;
-import com.huanghao.server.dto.PageDto;
+import com.huanghao.server.dto.ChapterDTO;
+import com.huanghao.server.dto.commons.PageDTO;
 import com.huanghao.server.mapper.ChapterMapper;
 import com.huanghao.server.util.CopyUtil;
 import com.huanghao.server.util.UuidUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,7 +25,7 @@ public class ChapterService {
     @Resource
     private ChapterMapper chapterMapper;
 
-    public void list(PageDto pageDto) {
+    public void list(PageDTO pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         ChapterExample chapterExample = new ChapterExample();
 
@@ -34,12 +33,12 @@ public class ChapterService {
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
         pageDto.setTotal(pageInfo.getTotal());
 
-        ArrayList<ChapterDto> chapterDtoList = (ArrayList<ChapterDto>) CopyUtil.copyList(chapterList, ChapterDto.class);
+        ArrayList<ChapterDTO> chapterDtoList = (ArrayList<ChapterDTO>) CopyUtil.copyList(chapterList, ChapterDTO.class);
 
         pageDto.setList(chapterDtoList);
     }
 
-    public void save(ChapterDto chapterDto) {
+    public void save(ChapterDTO chapterDto) {
         chapterDto.setId(UuidUtil.getShortUuid());
         Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
         chapterMapper.insert(chapter);

@@ -1,4 +1,4 @@
-package com.huanghao.server.dto;
+package com.huanghao.server.dto.commons;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import java.util.List;
  * @author HuangHao
  * @date 2020/8/15 23:49
  */
-public class PageDto<T> {
+public class PageDTO<T> {
 
     /**
      * 当前页码

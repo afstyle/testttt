@@ -1,6 +1,6 @@
 package com.huanghao.server.dto;
 
-public class ChapterDto {
+public class ChapterDTO {
     private String id;
 
     private String courseId;
