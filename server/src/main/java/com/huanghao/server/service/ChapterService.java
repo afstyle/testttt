@@ -10,6 +10,7 @@ import com.huanghao.server.mapper.ChapterMapper;
 import com.huanghao.server.util.CopyUtil;
 import com.huanghao.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class ChapterService {
     @Resource
     private ChapterMapper chapterMapper;
 
-    public void list(PageDTO pageDto) {
+    public void listChapter(PageDTO pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         ChapterExample chapterExample = new ChapterExample();
 
@@ -33,14 +34,26 @@ public class ChapterService {
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
         pageDto.setTotal(pageInfo.getTotal());
 
-        ArrayList<ChapterDTO> chapterDtoList = (ArrayList<ChapterDTO>) CopyUtil.copyList(chapterList, ChapterDTO.class);
-
+        List<ChapterDTO> chapterDtoList = CopyUtil.copyList(chapterList, ChapterDTO.class);
         pageDto.setList(chapterDtoList);
     }
 
-    public void save(ChapterDTO chapterDto) {
-        chapterDto.setId(UuidUtil.getShortUuid());
+    public void saveChapter(ChapterDTO chapterDto) {
         Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
-        chapterMapper.insert(chapter);
+        if (StringUtils.isEmpty(chapterDto.getId())) {
+            chapter.setId(UuidUtil.getShortUuid());
+            chapterMapper.insert(chapter);
+        } else {
+            chapterMapper.updateByPrimaryKey(chapter);
+        }
+    }
+
+    public ChapterDTO getChapter(String id) {
+        Chapter chapter = chapterMapper.selectByPrimaryKey(id);
+        return CopyUtil.copy(chapter, ChapterDTO.class);
+    }
+
+    public void deleteChapter(String id) {
+        chapterMapper.deleteByPrimaryKey(id);
     }
 }

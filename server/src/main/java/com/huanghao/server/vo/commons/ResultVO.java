@@ -10,7 +10,7 @@ public class ResultVO<T> {
     /**
      * 返回码
      */
-    private String code;
+    private Integer code;
 
     /**
      * 返回信息
@@ -30,11 +30,11 @@ public class ResultVO<T> {
         this.success = success;
     }
 
-    public String getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 
