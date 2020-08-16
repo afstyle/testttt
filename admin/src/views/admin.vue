@@ -6,7 +6,7 @@
                     <div class="layout-logo"></div>
                     <div class="layout-nav">
                         <MenuItem name="logout" >
-                            <Icon type="ios-person" />
+                            <Icon type="md-person" />
                             用户登出
                         </MenuItem>
                         <!--<Submenu name="2">

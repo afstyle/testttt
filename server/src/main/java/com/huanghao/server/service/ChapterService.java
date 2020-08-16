@@ -7,6 +7,7 @@ import com.huanghao.server.domain.ChapterExample;
 import com.huanghao.server.dto.ChapterDto;
 import com.huanghao.server.dto.PageDto;
 import com.huanghao.server.mapper.ChapterMapper;
+import com.huanghao.server.util.UuidUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +40,12 @@ public class ChapterService {
             chapterDtoList.add(chapterDto);
         }
         pageDto.setList(chapterDtoList);
+    }
+
+    public void save(ChapterDto chapterDto) {
+        chapterDto.setId(UuidUtil.getShortUuid());
+        Chapter chapter = new Chapter();
+        BeanUtils.copyProperties(chapterDto, chapter);
+        chapterMapper.insert(chapter);
     }
 }
