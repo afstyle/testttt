@@ -7,6 +7,7 @@ import com.huanghao.server.domain.ChapterExample;
 import com.huanghao.server.dto.ChapterDto;
 import com.huanghao.server.dto.PageDto;
 import com.huanghao.server.mapper.ChapterMapper;
+import com.huanghao.server.util.CopyUtil;
 import com.huanghao.server.util.UuidUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -27,25 +28,20 @@ public class ChapterService {
 
     public void list(PageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
-        ArrayList<ChapterDto> chapterDtoList = new ArrayList<>();
         ChapterExample chapterExample = new ChapterExample();
 
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
         pageDto.setTotal(pageInfo.getTotal());
 
-        for (Chapter chapter : chapterList) {
-            ChapterDto chapterDto = new ChapterDto();
-            BeanUtils.copyProperties(chapter, chapterDto);
-            chapterDtoList.add(chapterDto);
-        }
+        ArrayList<ChapterDto> chapterDtoList = (ArrayList<ChapterDto>) CopyUtil.copyList(chapterList, ChapterDto.class);
+
         pageDto.setList(chapterDtoList);
     }
 
     public void save(ChapterDto chapterDto) {
         chapterDto.setId(UuidUtil.getShortUuid());
-        Chapter chapter = new Chapter();
-        BeanUtils.copyProperties(chapterDto, chapter);
+        Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
         chapterMapper.insert(chapter);
     }
 }
