@@ -28,5 +28,12 @@ public class ResultVOUtil {
         resultVO.setMessage(msg);
         return resultVO;
     }
+    public static ResultVO validatorError(String msg) {
+        ResultVO resultVO = new ResultVO();
+        resultVO.setCode(401);
+        resultVO.setSuccess(false);
+        resultVO.setMessage(msg);
+        return resultVO;
+    }
 
 }

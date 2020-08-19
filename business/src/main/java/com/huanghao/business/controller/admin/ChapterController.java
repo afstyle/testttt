@@ -5,6 +5,7 @@ import com.huanghao.server.dto.commons.PageDTO;
 import com.huanghao.server.service.ChapterService;
 import com.huanghao.server.util.CommonUtil;
 import com.huanghao.server.util.ResultVOUtil;
+import com.huanghao.server.util.ValidatorUtil;
 import com.huanghao.server.vo.commons.ResultVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,20 +26,32 @@ public class ChapterController {
 
 
     private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
+    public static final String BUSINESS_NAME = "大章";
     
     
     @Resource
     private ChapterService chapterService;
 
+    /**
+     * 查询
+     */
     @PostMapping("/listChapter")
     public ResultVO listChapter(@RequestBody PageDTO pageDto) {
         chapterService.listChapter(pageDto);
         return ResultVOUtil.success(pageDto);
     }
 
+    /**
+     * 保存
+     */
     @PostMapping("/saveChapter")
     public ResultVO saveChapter(@RequestBody ChapterDTO chapterDto) {
-        LOG.info("chapterDto: {}", chapterDto);
+
+        // 校验
+        ValidatorUtil.require(chapterDto.getName(), "名称");
+        ValidatorUtil.require(chapterDto.getCourseId(), "课程ID");
+        ValidatorUtil.length(chapterDto.getCourseId(), "课程ID", 1, 8);
+
         try {
             chapterService.saveChapter(chapterDto);
         } catch (Exception e) {
@@ -48,16 +61,26 @@ public class ChapterController {
         return ResultVOUtil.success(chapterDto);
     }
 
+    /**
+     * 获取
+     */
     @GetMapping("/getChapter/{id}")
     public ResultVO getChapter(@PathVariable String id) {
-        LOG.info("id: {}", id);
+        // 校验
+        ValidatorUtil.require(id, "id");
+
         ChapterDTO chapterDTO = chapterService.getChapter(id);
         return ResultVOUtil.success(chapterDTO);
     }
 
+    /**
+     * 批量删除
+     */
     @DeleteMapping("/deleteChapter/{ids}")
     public ResultVO deleteChapter(@PathVariable String ids) {
-        LOG.info("ids: {}", ids);
+        // 校验
+        ValidatorUtil.require(ids, "ids");
+
         List<String> idList = CommonUtil.splitString2List(ids);
         if (CollectionUtils.isEmpty(idList)) {
             return ResultVOUtil.error(String.format("参数异常，ids = %s", ids));
