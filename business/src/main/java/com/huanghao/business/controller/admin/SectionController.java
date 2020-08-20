@@ -1,8 +1,8 @@
 package com.huanghao.business.controller.admin;
 
-import com.huanghao.server.dto.ChapterDTO;
+import com.huanghao.server.dto.SectionDTO;
 import com.huanghao.server.dto.commons.PageDTO;
-import com.huanghao.server.service.ChapterService;
+import com.huanghao.server.service.SectionService;
 import com.huanghao.server.util.CommonUtil;
 import com.huanghao.server.util.ResultVOUtil;
 import com.huanghao.server.util.ValidatorUtil;
@@ -15,68 +15,61 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * @author HuangHao
- * @date 2020/8/7 0:24
- */
 @RestController
-@RequestMapping("/admin/chapter")
-public class ChapterController {
+@RequestMapping("/admin/section")
+public class SectionController {
 
 
-    private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
-    public static final String BUSINESS_NAME = "大章";
-    
-    
+    private static final Logger LOG = LoggerFactory.getLogger(SectionController.class);
+    public static final String BUSINESS_NAME = "小节";
+
+
     @Resource
-    private ChapterService chapterService;
+    private SectionService sectionService;
 
     /**
      * 列表查询
      */
-    @PostMapping("/listChapter")
-    public ResultVO listChapter(@RequestBody PageDTO pageDto) {
-        chapterService.listChapter(pageDto);
+    @PostMapping("/listSection")
+    public ResultVO listSection(@RequestBody PageDTO pageDto) {
+        sectionService.listSection(pageDto);
         return ResultVOUtil.success(pageDto);
     }
 
     /**
      * 保存
      */
-    @PostMapping("/saveChapter")
-    public ResultVO saveChapter(@RequestBody ChapterDTO chapterDto) {
+    @PostMapping("/saveSection")
+    public ResultVO saveSection(@RequestBody SectionDTO sectionDto) {
 
         // 校验
-        ValidatorUtil.require(chapterDto.getName(), "名称");
-        ValidatorUtil.require(chapterDto.getCourseId(), "课程ID");
-        ValidatorUtil.length(chapterDto.getCourseId(), "课程ID", 1, 8);
 
         try {
-            chapterService.saveChapter(chapterDto);
+            sectionService.saveSection(sectionDto);
         } catch (Exception e) {
             LOG.error(e.getMessage());
             return ResultVOUtil.error(e.getMessage());
         }
-        return ResultVOUtil.success(chapterDto);
+        return ResultVOUtil.success(sectionDto);
     }
 
     /**
      * 单个查询
      */
-    @GetMapping("/getChapter/{id}")
-    public ResultVO getChapter(@PathVariable String id) {
+    @GetMapping("/getSection/{id}")
+    public ResultVO getSection(@PathVariable String id) {
         // 校验
         ValidatorUtil.require(id, "id");
 
-        ChapterDTO chapterDTO = chapterService.getChapter(id);
-        return ResultVOUtil.success(chapterDTO);
+        SectionDTO sectionDTO = sectionService.getSection(id);
+        return ResultVOUtil.success(sectionDTO);
     }
 
     /**
      * 批量删除
      */
-    @DeleteMapping("/deleteChapter/{ids}")
-    public ResultVO deleteChapter(@PathVariable String ids) {
+    @DeleteMapping("/deleteSection/{ids}")
+    public ResultVO deleteSection(@PathVariable String ids) {
         // 校验
         ValidatorUtil.require(ids, "ids");
 
@@ -85,7 +78,7 @@ public class ChapterController {
             return ResultVOUtil.error(String.format("参数异常，ids = %s", ids));
         }
         idList.forEach(id -> {
-            chapterService.deleteChapter(id);
+            sectionService.deleteSection(id);
         });
         return ResultVOUtil.success();
     }
