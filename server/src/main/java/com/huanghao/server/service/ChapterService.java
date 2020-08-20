@@ -26,6 +26,9 @@ public class ChapterService {
     @Resource
     private ChapterMapper chapterMapper;
 
+    /**
+     * 列表查询
+     */
     public void listChapter(PageDTO pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         ChapterExample chapterExample = new ChapterExample();
@@ -38,6 +41,10 @@ public class ChapterService {
         pageDto.setList(chapterDtoList);
     }
 
+
+    /**
+     * 保存
+     */
     public void saveChapter(ChapterDTO chapterDto) {
         Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
         if (StringUtils.isEmpty(chapterDto.getId())) {
@@ -48,11 +55,18 @@ public class ChapterService {
         }
     }
 
+
+    /**
+     * 单个查询
+     */
     public ChapterDTO getChapter(String id) {
         Chapter chapter = chapterMapper.selectByPrimaryKey(id);
         return CopyUtil.copy(chapter, ChapterDTO.class);
     }
 
+    /**
+     * 删除
+     */
     public void deleteChapter(String id) {
         chapterMapper.deleteByPrimaryKey(id);
     }
