@@ -1,11 +1,25 @@
 
+
+-- 测试表
+
+drop table if exists `test`;
+create table `test` (
+    `id` char(8) not null default '' comment 'id',
+    `name` varchar(50) comment '名称',
+    primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='测试表';
+
+insert into `test` (id, name) values (1, '测试1');
+insert into `test` (id, name) values (2, '测试2');
+
+
 -- 大章表
 drop table if exists `chapter`;
 create table `chapter` (
-    `id` char(8) not null comment 'ID',
-    `course_id` char(8) comment '课程ID',
-    `name` varchar(50) comment '名称',
-    primary key (`id`)
+                           `id` char(8) not null comment 'ID',
+                           `course_id` char(8) comment '课程ID',
+                           `name` varchar(50) comment '名称',
+                           primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment='大章';
 
 insert into `chapter` (id, course_id, name) values ('00000000', '0000000', '测试大章00');
@@ -25,14 +39,24 @@ insert into `chapter` (id, course_id, name) values ('00000013', '0000000', '测�
 
 
 
--- 测试表
 
-drop table if exists `test`;
-create table `test` (
-    `id` char(8) not null default '' comment 'id',
-    `name` varchar(50) comment '名称',
-    primary key (`id`)
-) engine=innodb default charset=utf8mb4 comment='测试表';
+-- 小节
+drop table if exists `section`;
+create table `section` (
+   `id` char(8) not null default '' comment 'id',
+   `title` varchar(50) not null comment '标题',
+   `course_id` char(8) comment '课程|course.id',
+   `chapter_id` char(8) comment '大章|chapter.id',
+   `video` varchar(200) comment '视频',
+   `time` int comment '时长|单位秒',
+   `charge` char(1) comment '收费|C 收费；F 免费',
+   `sort` int comment '顺序',
+   `created_at` datetime(3) comment '创建时间',
+   `updated_at` datetime(3) comment '修改时间',
+   primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='小节';
 
-insert into `test` (id, name) values (1, '测试1');
-insert into `test` (id, name) values (2, '测试2');
+alter table `section` add column (`vod` char(32) comment 'vod|阿里云vod');
+
+insert into `section` (id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at)
+values ('00000001', '测试小节01', '00000001', '00000000', '', 500, 'f', 1, now(), now());
