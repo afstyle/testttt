@@ -16,7 +16,7 @@
     <Pagination ref="page" v-bind:list="list" />
 
     <!-- 新增修改modal -->
-    <Modal v-model="formModal" :mask-closable="false" :loading="modalLoading" ok-text="提 交" :title="form && form.id ? '修改' : '新增'" @on-ok="formValidate">
+    <Modal v-model="formModal" :mask-closable="false" :loading="modalLoading" :ok-text="form && form.id ? '保存' : '新增'" :title="form && form.id ? '修改' : '新增'" @on-ok="formValidate">
       <Form ref="form" :model="form" :rules="rule" :label-width="80">
         <FormItem label="名称" prop="name">
           <Input v-model="form.name" placeholder="请输入..."></Input>
@@ -30,6 +30,7 @@
 </template>
 <script>
     import Pagination from "../components/commons/pagination";
+    import Http from "../../axios/axios";
 
     export default {
         name: 'chapter',
@@ -93,12 +94,12 @@
             list() {
                 let _this = this;
                 _this.loading = true;
-                _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/listChapter', {
+                Http.post('business/admin/chapter/listChapter', {
                     page: _this.$refs.page.pageNum,
                     size: _this.$refs.page.pageSize
-                }).then((response)=>{
+                }).then((res)=>{
                     _this.loading = false;
-                    let result = response.data.result;
+                    let result = res.result;
                     _this.tableData = result.list;
                     _this.$refs.page.total = result.total;
                 })
@@ -123,14 +124,13 @@
              */
             save() {
                 let _this = this;
-                _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/saveChapter', _this.form).then((response)=>{
-                    let data = response.data;
-                    if (data.success) {
-                        _this.$Message.success(data.message);
+                Http.post('business/admin/chapter/saveChapter', _this.form).then((res)=>{
+                    if (res.success) {
+                        _this.$Message.success(res.message);
                         _this.formModal = false;
                         _this.list();
                     } else {
-                        _this.modalSubmitFail(_this, data.message);
+                        _this.modalSubmitFail(_this, res.message);
                     }
 
                 });
@@ -143,8 +143,8 @@
             get(id) {
                 let _this = this;
                 _this.formModal = true;
-                _this.$ajax.get('http://127.0.0.1:9000/business/admin/chapter/getChapter/' + id).then((response)=>{
-                    _this.form = response.data.result;
+                Http.get('business/admin/chapter/getChapter/' + id).then((res)=>{
+                    _this.form = res.result;
                 })
             },
 
@@ -158,13 +158,12 @@
                     title: '确认',
                     content: '<p>是否确认删除此项</p>',
                     onOk: () => {
-                        _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/deleteChapter/' + id).then((response)=>{
-                            let data = response.data;
-                            if (data.success) {
-                                _this.$Message.success(data.message);
+                        Http.delete('business/admin/chapter/deleteChapter/' + id).then((res)=>{
+                            if (res.success) {
+                                _this.$Message.success(res.message);
                                 _this.list();
                             } else {
-                                _this.$Message.error(data.message);
+                                _this.$Message.error(res.message);
                             }
                         })
                     }

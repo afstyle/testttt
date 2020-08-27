@@ -8,9 +8,18 @@ import App from './app.vue';
 import 'view-design/dist/styles/iview.css';
 import './libs/iview-pro/iview-pro.css';
 import axios from 'axios';
+import config from "./config/config";
 
 Vue.use(VueRouter);
-Vue.use(ViewUI);
+Vue.use(ViewUI, {
+    transfer: true,
+    size: 'default',
+    capture: false,
+    select: {
+        arrow: 'md-arrow-dropdown',
+        arrowSize: 20
+    }
+});
 Vue.use(iViewPro);
 Vue.prototype.$ajax = axios;
 
@@ -36,14 +45,14 @@ router.afterEach((to, from, next) => {
 /**
  * axios拦截器
  */
-axios.interceptors.request.use(function (config) {
+/*axios.interceptors.request.use(function (config) {
     console.log("请求：", config);
     return config;
 }, error => {})
 axios.interceptors.response.use(function (response) {
     console.log("返回结果：", response);
     return response;
-}, error => {})
+}, error => {})*/
 
 new Vue({
     el: '#app',

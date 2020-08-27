@@ -1,5 +1,5 @@
 {
-  "name": "view-ui-project",
+  "name": "admin",
   "version": "4.0.0",
   "description": "A base project with Vue.js2、Vue-Router、webpack2 and with View UI 4.",
   "main": "index.js",
