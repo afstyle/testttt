@@ -24,16 +24,9 @@ public class ResultVOUtil {
         return resultVO;
     }
 
-    public static ResultVO success(String msg) {
-        ResultVO resultVO = new ResultVO();
-        resultVO.setCode(200);
-        resultVO.setMessage(msg);
-        return resultVO;
-    }
-
 
     public static ResultVO success() {
-        return success("ok");
+        return success(null);
     }
 
     public static ResultVO error(String msg) {
