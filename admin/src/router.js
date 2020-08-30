@@ -29,9 +29,16 @@ const routers = [
                 path: 'business/chapter', // 子路由的配置不要用'/'开头！！！
                 name: 'business/chapter',
                 meta: {
-                    title: '大目录管理'
+                    title: '大章管理'
                 },
                 component: (resolve) => require(['./views/admin/chapter.vue'], resolve)
+            },{
+                path: 'business/section', // 子路由的配置不要用'/'开头！！！
+                name: 'business/section',
+                meta: {
+                    title: '小节管理'
+                },
+                component: (resolve) => require(['./views/admin/section.vue'], resolve)
             },
         ]
     },

@@ -139,6 +139,10 @@
                                 route: 'chapter',
                                 name: '大章管理'
                             },
+                            {
+                                route: 'section',
+                                name: '小节管理'
+                            },
                         ]
                     },
                 ],

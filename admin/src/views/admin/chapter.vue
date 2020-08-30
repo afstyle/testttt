@@ -19,10 +19,10 @@
     <Modal v-model="formModal" :mask-closable="false" :loading="modalLoading" :ok-text="form && form.id ? '保存' : '新增'" :title="form && form.id ? '修改' : '新增'" @on-ok="formValidate">
       <Form ref="form" :model="form" :rules="rule" :label-width="80">
         <FormItem label="名称" prop="name">
-          <Input v-model="form.name" placeholder="请输入..."></Input>
+          <Input v-model="form.name" placeholder="请输入..." />
         </FormItem>
         <FormItem label="课程ID" prop="courseId">
-          <Input v-model="form.courseId" placeholder="请输入..."></Input>
+          <Input v-model="form.courseId" placeholder="请输入..." />
         </FormItem>
       </Form>
     </Modal>
@@ -30,7 +30,6 @@
 </template>
 <script>
     import Pagination from "../components/commons/pagination";
-    import Http from "../../axios/axios";
 
     export default {
         name: 'chapter',
@@ -94,7 +93,7 @@
             list() {
                 let _this = this;
                 _this.loading = true;
-                Http.post('business/admin/chapter/listChapter', {
+                _this.Http.post('business/admin/chapter/listChapter', {
                     page: _this.$refs.page.pageNum,
                     size: _this.$refs.page.pageSize
                 }).then((res)=>{
@@ -124,7 +123,7 @@
              */
             save() {
                 let _this = this;
-                Http.post('business/admin/chapter/saveChapter', _this.form).then((res)=>{
+                _this.Http.post('business/admin/chapter/saveChapter', _this.form).then((res)=>{
                     if (res.success) {
                         _this.$Message.success(res.message);
                         _this.formModal = false;
@@ -143,7 +142,7 @@
             get(id) {
                 let _this = this;
                 _this.formModal = true;
-                Http.get('business/admin/chapter/getChapter/' + id).then((res)=>{
+                _this.Http.get('business/admin/chapter/getChapter/' + id).then((res)=>{
                     _this.form = res.result;
                 })
             },
@@ -158,7 +157,7 @@
                     title: '确认',
                     content: '<p>是否确认删除此项</p>',
                     onOk: () => {
-                        Http.delete('business/admin/chapter/deleteChapter/' + id).then((res)=>{
+                        _this.Http.delete('business/admin/chapter/deleteChapter/' + id).then((res)=>{
                             if (res.success) {
                                 _this.$Message.success(res.message);
                                 _this.list();
