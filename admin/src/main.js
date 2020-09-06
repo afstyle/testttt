@@ -8,6 +8,7 @@ import App from './app.vue';
 import 'view-design/dist/styles/iview.css';
 import './libs/iview-pro/iview-pro.css';
 import Http from "./axios/axios";
+import filter from "./utils/filter";
 
 Vue.use(VueRouter);
 Vue.use(ViewUI, {
@@ -52,6 +53,12 @@ axios.interceptors.response.use(function (response) {
     console.log("返回结果：", response);
     return response;
 }, error => {})*/
+
+// 全局过滤器
+Object.keys(filter).forEach(value => {
+    Vue.filter(value, filter[value])
+})
+
 
 new Vue({
     el: '#app',

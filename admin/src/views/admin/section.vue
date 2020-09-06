@@ -12,6 +12,9 @@
         <Button type="primary" size="small" @click="get(row.id)" style="margin-right: 5px">修 改</Button>
         <Button type="error" size="small" @click="deletes(row.id)">删 除</Button>
       </template>
+      <template slot-scope="{ row, index }" slot="charge">
+        {{option.charge | optionReplace(row.charge)}}
+      </template>
     </Table>
     <Pagination ref="page" v-bind:list="list" />
 
@@ -34,7 +37,9 @@
           <Input v-model="form.time" placeholder="请输入..." />
         </FormItem>
         <FormItem label="收费" prop="charge">
-          <Input v-model="form.charge" placeholder="请输入..." />
+          <Select v-model="form.charge">
+            <Option v-for="item in option.charge" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
         </FormItem>
         <FormItem label="顺序" prop="sort">
           <Input v-model="form.sort" placeholder="请输入..." />
@@ -87,7 +92,7 @@
           },
           {
             title: '收费',
-            key: 'charge'
+            slot: 'charge'
           },
           {
             title: '顺序',
@@ -115,7 +120,10 @@
           video: [
             { type: 'string', min: 1, max: 200, message: '填写长度在1~200位', trigger: 'blur' }
           ],
-        }
+        },
+        option: {
+            charge: [{value: 'C', label: '收费'}, {value: 'F', label: '免费'}],
+        },
       }
     },
     methods: {

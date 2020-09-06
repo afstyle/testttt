@@ -44,71 +44,70 @@
                         </Submenu>
                     </Menu>
                 </Sider>
-                <Layout :style="{padding: '24px 24px 0'}">
-<!--                    <Row :style="{margin: '24px 0'}">-->
-<!--&lt;!&ndash;                        <BreadcrumbItem>Home</BreadcrumbItem>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <BreadcrumbItem>Components</BreadcrumbItem>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <BreadcrumbItem>Layout</BreadcrumbItem>&ndash;&gt;-->
-<!--                        <Notification style="float: right; margin-right: 100px;"-->
-<!--                                auto-count-->
-<!--                                @on-load-more="handleLoadMore"-->
-<!--                                @on-clear="handleClear"-->
-<!--                        >-->
-<!--                            <NotificationTab-->
-<!--                                    title="通知"-->
-<!--                                    name="message"-->
-<!--                                    :count="unreadMessage"-->
-<!--                                    :loaded-all="messageList.length >= 15"-->
-<!--                                    :loading="messageLoading"-->
-<!--                                    :scroll-to-load="false"-->
-<!--                            >-->
-<!--                                <NotificationItem-->
-<!--                                        v-for="(item, index) in messageList"-->
-<!--                                        :key="index"-->
-<!--                                        :title="item.title"-->
-<!--                                        :icon="item.icon"-->
-<!--                                        :icon-color="item.iconColor"-->
-<!--                                        :time="item.time"-->
-<!--                                        :read="item.read"-->
-<!--                                />-->
-<!--                            </NotificationTab>-->
-<!--                            <NotificationTab-->
-<!--                                    title="关注"-->
-<!--                                    name="follow"-->
-<!--                                    :count="unreadFollow"-->
-<!--                                    :loaded-all="followList.length >= 15"-->
-<!--                                    :loading="followLoading"-->
-<!--                                    :scroll-to-load="false"-->
-<!--                            >-->
-<!--                                <NotificationItem-->
-<!--                                        v-for="(item, index) in followList"-->
-<!--                                        :key="index"-->
-<!--                                        :avatar="item.avatar"-->
-<!--                                        :title="item.title"-->
-<!--                                        :time="item.time"-->
-<!--                                        :read="item.read"-->
-<!--                                />-->
-<!--                            </NotificationTab>-->
-<!--                            <NotificationTab-->
-<!--                                    title="待办"-->
-<!--                                    name="todo"-->
-<!--                                    :count="unreadTodo"-->
-<!--                                    :loaded-all="todoList.length >= 15"-->
-<!--                                    :loading="todoLoading"-->
-<!--                                    :scroll-to-load="false"-->
-<!--                            >-->
-<!--                                <NotificationItem-->
-<!--                                        v-for="(item, index) in todoList"-->
-<!--                                        :key="index"-->
-<!--                                        :title="item.title"-->
-<!--                                        :content="item.content"-->
-<!--                                        :tag="item.tag"-->
-<!--                                        :tag-props="item.tagProps"-->
-<!--                                        :read="item.read"-->
-<!--                                />-->
-<!--                            </NotificationTab>-->
-<!--                        </Notification>-->
-<!--                    </Row>-->
+                <Layout :style="{padding: '0 24px 24px'}">
+                    <Breadcrumb :style="{margin: '24px 0'}">
+                        <BreadcrumbItem>{{ breadcrumbItems.itemName1 || '首页' }}</BreadcrumbItem>
+                        <BreadcrumbItem v-if="breadcrumbItems.itemName2">{{ breadcrumbItems.itemName2 }}</BreadcrumbItem>
+                        <!--<Notification style="float: right; margin-right: 100px;"
+                                auto-count
+                                @on-load-more="handleLoadMore"
+                                @on-clear="handleClear"
+                        >
+                            <NotificationTab
+                                    title="通知"
+                                    name="message"
+                                    :count="unreadMessage"
+                                    :loaded-all="messageList.length >= 15"
+                                    :loading="messageLoading"
+                                    :scroll-to-load="false"
+                            >
+                                <NotificationItem
+                                        v-for="(item, index) in messageList"
+                                        :key="index"
+                                        :title="item.title"
+                                        :icon="item.icon"
+                                        :icon-color="item.iconColor"
+                                        :time="item.time"
+                                        :read="item.read"
+                                />
+                            </NotificationTab>
+                            <NotificationTab
+                                    title="关注"
+                                    name="follow"
+                                    :count="unreadFollow"
+                                    :loaded-all="followList.length >= 15"
+                                    :loading="followLoading"
+                                    :scroll-to-load="false"
+                            >
+                                <NotificationItem
+                                        v-for="(item, index) in followList"
+                                        :key="index"
+                                        :avatar="item.avatar"
+                                        :title="item.title"
+                                        :time="item.time"
+                                        :read="item.read"
+                                />
+                            </NotificationTab>
+                            <NotificationTab
+                                    title="待办"
+                                    name="todo"
+                                    :count="unreadTodo"
+                                    :loaded-all="todoList.length >= 15"
+                                    :loading="todoLoading"
+                                    :scroll-to-load="false"
+                            >
+                                <NotificationItem
+                                        v-for="(item, index) in todoList"
+                                        :key="index"
+                                        :title="item.title"
+                                        :content="item.content"
+                                        :tag="item.tag"
+                                        :tag-props="item.tagProps"
+                                        :read="item.read"
+                                />
+                            </NotificationTab>
+                        </Notification>-->
+                    </Breadcrumb>
                     
                     <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
                         <router-view></router-view>
@@ -200,7 +199,11 @@
                         blankTarget: true
                     }
                 ],
-                copyright: 'Copyright © 2020 AfSty1e'
+                copyright: 'Copyright © 2020 AfSty1e',
+                breadcrumbItems: {
+                    itemName1: '',
+                    itemName2: ''
+                },
             }
         },
         computed: {
@@ -237,9 +240,14 @@
 
                 let menuClick = _this.menuList.find(menu => menu.route === route || (menu.subMenu && menu.subMenu.find(submenu => submenu.route === route)));
                 if (menuClick.subMenu) {
-                    routePath =  '/' + menuClick.route + '/' + menuClick.subMenu.find(submenu => submenu.route === route).route;
+                    let subMenuClick = menuClick.subMenu.find(submenu => submenu.route === route);
+                    routePath =  '/' + menuClick.route + '/' + subMenuClick.route;
+                    _this.breadcrumbItems.itemName1 = menuClick.name;
+                    _this.breadcrumbItems.itemName2 = subMenuClick.name;
                 } else {
                     routePath =  '/' + menuClick.route;
+                    _this.breadcrumbItems.itemName1 = menuClick.name;
+                    _this.breadcrumbItems.itemName2 = '';
                 }
                 if (routePath && routePath.length > 0) {
                     console.log('跳转至路由：' + routePath)
