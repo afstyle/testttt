@@ -64,13 +64,14 @@
         // form
         form: {},
         rule: {
-          /*name: [
-            { required: true, message: '名称不能为空', trigger: 'blur' }
+          <#list fieldList as field>
+            <#if (!field.nullAble && field.name != 'id') || (field.length > 0)>
+          ${field.nameHump}: [<#if !field.nullAble && field.name != 'id'>
+            { required: true, message: '${field.nameCn}不能为空', trigger: 'blur' },</#if><#if (field.length > 0)>
+            { type: 'string', min: 1, max: ${field.length}, message: '填写长度在1~${field.length}位', trigger: 'blur' }</#if>
           ],
-          courseId: [
-            { required: true, message: '课程ID不能为空', trigger: 'blur' },
-            { type: 'string', min: 1, max: 8, message: '填写长度在1~8位', trigger: 'blur' }
-          ]*/
+            </#if>
+          </#list>
         }
       }
     },

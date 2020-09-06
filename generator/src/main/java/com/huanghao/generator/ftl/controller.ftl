@@ -43,6 +43,14 @@ public class ${Domain}Controller {
     public ResultVO save${Domain}(@RequestBody ${Domain}DTO ${domain}Dto) {
 
         // 校验
+        <#list fieldList as field>
+            <#if !field.nullAble && field.name != 'id'>
+        ValidatorUtil.require(${domain}Dto.get${field.nameBigHump}(), "${field.nameCn}");
+            </#if>
+            <#if (field.length > 0)>
+        ValidatorUtil.length(${domain}Dto.get${field.nameBigHump}(), "${field.nameCn}", 1, ${field.length});
+            </#if>
+        </#list>
 
         try {
             ${domain}Service.save${Domain}(${domain}Dto);

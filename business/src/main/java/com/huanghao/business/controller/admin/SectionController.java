@@ -43,6 +43,9 @@ public class SectionController {
     public ResultVO saveSection(@RequestBody SectionDTO sectionDto) {
 
         // 校验
+        ValidatorUtil.require(sectionDto.getTitle(), "标题");
+        ValidatorUtil.length(sectionDto.getTitle(), "标题", 1, 50);
+        ValidatorUtil.length(sectionDto.getVideo(), "视频", 1, 200);
 
         try {
             sectionService.saveSection(sectionDto);

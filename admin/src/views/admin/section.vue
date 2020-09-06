@@ -125,13 +125,13 @@
         // form
         form: {},
         rule: {
-          /*name: [
-            { required: true, message: '名称不能为空', trigger: 'blur' }
+          title: [
+            { required: true, message: '标题不能为空', trigger: 'blur' },
+            { type: 'string', min: 1, max: 50, message: '填写长度在1~50位', trigger: 'blur' }
           ],
-          courseId: [
-            { required: true, message: '课程ID不能为空', trigger: 'blur' },
-            { type: 'string', min: 1, max: 8, message: '填写长度在1~8位', trigger: 'blur' }
-          ]*/
+          video: [
+            { type: 'string', min: 1, max: 200, message: '填写长度在1~200位', trigger: 'blur' }
+          ],
         }
       }
     },
