@@ -199,7 +199,7 @@
                         blankTarget: true
                     }
                 ],
-                copyright: 'Copyright © 2020 AfSty1e',
+                copyright: 'Copyright © 2020 HuangHao',
                 breadcrumbItems: {
                     itemName1: '',
                     itemName2: ''

@@ -30,6 +30,12 @@
             <groupId>org.dom4j</groupId>
             <artifactId>dom4j</artifactId>
         </dependency>
+
+        <!-- 添加本地server依赖 -->
+        <dependency>
+            <groupId>com.huanghao</groupId>
+            <artifactId>server</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

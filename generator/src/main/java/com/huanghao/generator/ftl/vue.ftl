@@ -29,7 +29,7 @@
   import Pagination from "../components/commons/pagination";
 
   export default {
-    name: '${domain}',
+    name: '${module}-${domain}',
     components: { Pagination },
     mounted() {
       let _this = this;

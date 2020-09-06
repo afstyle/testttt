@@ -13,7 +13,7 @@
         <Button type="error" size="small" @click="deletes(row.id)">删 除</Button>
       </template>
       <template slot-scope="{ row, index }" slot="charge">
-        {{option.charge | optionReplace(row.charge)}}
+        {{option.charge | optionTurn(row.charge)}}
       </template>
     </Table>
     <Pagination ref="page" v-bind:list="list" />
@@ -52,7 +52,7 @@
   import Pagination from "../components/commons/pagination";
 
   export default {
-    name: 'section',
+    name: 'business-section',
     components: { Pagination },
     mounted() {
       let _this = this;
@@ -122,7 +122,7 @@
           ],
         },
         option: {
-            charge: CHARGE,
+            charge: SECTION_CHARGE,
         },
       }
     },

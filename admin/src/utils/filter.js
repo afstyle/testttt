@@ -1,35 +1,16 @@
 /**
- * 数组过滤器 例如：{{SECTION_CHARGE | optionReplace(section.charge)}}
- * @param object 例如：{CHARGE:{value:"C", label:"收费"},FREE:{value:"F", label:"免费"}}
- * @param key 例如：C
+ * option过滤器 例如：{{CHARGE | optionTurn(section.charge)}}
+ * @param list 例如：[{value:"C", label:"收费"}, {value:"F", label:"免费"}]
+ * @param value 例如：C
  * @returns {string} 例如：收费
  */
-let optionReplace = (object, key) =>  {
-    if (!object || !key) {
-        return "";
-    } else {
-        let result = "";
-        for(let enums in object){
-            if (key === object[enums]["value"]) {
-                result = object[enums]["label"];
-            }
-        }
-        return result;
-    }
-};
-/**
- * 数组过滤器 例如：{{CHARGE | optionReplaceArray(section.charge)}}
- * @param list 例如：[{value:"C", label:"收费"},{value:"F", label:"免费"}]
- * @param key 例如：C
- * @returns {string} 例如：收费
- */
-let optionReplaceArray = (list, key) =>  {
-    if (!list || !key) {
+let optionTurn = (list, value) =>  {
+    if (!list || !value) {
         return "";
     } else {
         let result = "";
         for (let i = 0; i < list.length; i++) {
-            if (key === list[i]["value"]) {
+            if (value === list[i]["value"]) {
                 result = list[i]["label"];
             }
         }
@@ -90,7 +71,7 @@ let formatFileSize = (value) => {
 };
 
 export default {
-    optionReplace,
+    optionTurn,
     formatSecond,
     formatFileSize
 }
