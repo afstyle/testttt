@@ -71,12 +71,13 @@
             <#if !field.nullAble || (field.length > 0)>
           ${field.nameHump}: [<#if !field.nullAble>
             { required: true, message: '${field.nameCn}不能为空', trigger: 'blur' },</#if><#if (field.length > 0)>
-            { type: 'string', min: 1, max: ${field.length}, message: '填写长度在1~${field.length}位', trigger: 'blur' }</#if>
+            { type: 'string', min: 1, max: ${field.length?c}, message: '填写长度在1~${field.length}位', trigger: 'blur' }</#if>
           ],
             </#if>
           </#if>
           </#list>
-        }
+        },
+        options: {},
       }
     },
     methods: {

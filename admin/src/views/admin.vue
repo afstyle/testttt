@@ -142,6 +142,10 @@
                                 route: 'section',
                                 name: '小节管理'
                             },
+                            {
+                                route: 'course',
+                                name: '课程管理'
+                            },
                         ]
                     },
                 ],

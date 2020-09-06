@@ -39,6 +39,13 @@ const routers = [
                     title: '小节管理'
                 },
                 component: (resolve) => require(['./views/admin/section.vue'], resolve)
+            },{
+                path: 'business/course', // 子路由的配置不要用'/'开头！！！
+                name: 'business/course',
+                meta: {
+                    title: '课程管理'
+                },
+                component: (resolve) => require(['./views/admin/course.vue'], resolve)
             },
         ]
     },

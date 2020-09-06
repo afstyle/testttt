@@ -1,6 +1,7 @@
 import axios from 'axios';
 import utils from '../utils/util';
 import urlSwitch from "./switch";
+import { Message } from "view-design";
 // import Cookies from 'js-cookie';
 
 
@@ -25,7 +26,7 @@ axios.interceptors.request.use(config => {
     /*if (config.url.indexOf('login') < 0) {
         let lessTime = Number(Cookies.get('expireTime')) - Date.now(); //后台返回的过期时间与现在的进行计算
         if (lessTime <= 0) {
-            this.$Message.error({
+            Message.error({
                 content: '登陆过期',
                 duration: 5
             });
@@ -77,7 +78,7 @@ function formatReq(type, url, data) {
             }
 
         }).catch(e => {
-            _this.$Message.error(e.message);
+            Message.error({content: e.message, duration: 10, closable: true});
         });
     });
 }
@@ -98,7 +99,7 @@ const Http = {
                     }
                 }).catch(e => {
                     // reject(e.message);
-                    _this.$Message.error(e.message);
+                    Message.error({content: e.message, duration: 10, closable: true});
                 })
         })
     },
