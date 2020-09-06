@@ -17,10 +17,10 @@
 
     <!-- 新增修改modal -->
     <Modal v-model="formModal" :mask-closable="false" :loading="modalLoading" :ok-text="form && form.id ? '保存' : '新增'" :title="form && form.id ? '修改' : '新增'" @on-ok="formValidate">
-      <Form ref="form" :model="form" :rules="rule" :label-width="80"><#list fieldList as field>
+      <Form ref="form" :model="form" :rules="rule" :label-width="80"><#list fieldList as field><#if field.nameHump != "id" && field.nameHump != "createdAt" && field.nameHump != "updatedAt">
         <FormItem label="${field.nameCn}" prop="${field.nameHump}">
           <Input v-model="form.${field.nameHump}" placeholder="请输入..." />
-        </FormItem></#list>
+        </FormItem></#if></#list>
       </Form>
     </Modal>
   </div>
@@ -44,10 +44,12 @@
         // table
         columns: [
           <#list fieldList as field>
+          <#if field.nameHump != 'createdAt' && field.nameHump != 'updatedAt'>
           {
             title: '${field.nameCn}',
             key: '${field.nameHump}'
           },
+          </#if>
           </#list>
           {
             title: '操作',
@@ -65,12 +67,14 @@
         form: {},
         rule: {
           <#list fieldList as field>
-            <#if (!field.nullAble && field.name != 'id') || (field.length > 0)>
-          ${field.nameHump}: [<#if !field.nullAble && field.name != 'id'>
+          <#if field.nameHump != 'id' && field.nameHump != 'createdAt' && field.nameHump != 'updatedAt' && field.nameHump != 'sort'>
+            <#if !field.nullAble || (field.length > 0)>
+          ${field.nameHump}: [<#if !field.nullAble>
             { required: true, message: '${field.nameCn}不能为空', trigger: 'blur' },</#if><#if (field.length > 0)>
             { type: 'string', min: 1, max: ${field.length}, message: '填写长度在1~${field.length}位', trigger: 'blur' }</#if>
           ],
             </#if>
+          </#if>
           </#list>
         }
       }

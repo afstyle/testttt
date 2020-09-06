@@ -14,6 +14,11 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+<#list typeSet as type>
+    <#if type == 'Date'>
+import java.util.Date;
+    </#if>
+</#list>
 
 @Service
 public class ${Domain}Service {
@@ -27,6 +32,11 @@ public class ${Domain}Service {
     public void list${Domain}(PageDTO pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         ${Domain}Example ${domain}Example = new ${Domain}Example();
+        <#list fieldList as field>
+            <#if field.nameHump == 'sort'>
+        ${domain}Example.setOrderByClause("sort asc");
+            </#if>
+        </#list>
 
         List<${Domain}> ${domain}List = ${domain}Mapper.selectByExample(${domain}Example);
         PageInfo<${Domain}> pageInfo = new PageInfo<>(${domain}List);
@@ -42,10 +52,24 @@ public class ${Domain}Service {
      */
     public void save${Domain}(${Domain}DTO ${domain}Dto) {
         ${Domain} ${domain} = CopyUtil.copy(${domain}Dto, ${Domain}.class);
+        Date nowDate = new Date();
         if (StringUtils.isEmpty(${domain}Dto.getId())) {
             ${domain}.setId(UuidUtil.getShortUuid());
+            <#list fieldList as field>
+                <#if field.nameHump == 'createdAt'>
+            ${domain}.setCreatedAt(nowDate);
+                </#if>
+                <#if field.nameHump == 'updatedAt'>
+            ${domain}.setUpdatedAt(nowDate);
+                </#if>
+            </#list>
             ${domain}Mapper.insert(${domain});
         } else {
+            <#list fieldList as field>
+                <#if field.nameHump == 'updatedAt'>
+            ${domain}.setUpdatedAt(nowDate);
+                </#if>
+            </#list>
             ${domain}Mapper.updateByPrimaryKey(${domain});
         }
     }

@@ -18,9 +18,6 @@
     <!-- 新增修改modal -->
     <Modal v-model="formModal" :mask-closable="false" :loading="modalLoading" :ok-text="form && form.id ? '保存' : '新增'" :title="form && form.id ? '修改' : '新增'" @on-ok="formValidate">
       <Form ref="form" :model="form" :rules="rule" :label-width="80">
-        <FormItem label="id" prop="id">
-          <Input v-model="form.id" placeholder="请输入..." />
-        </FormItem>
         <FormItem label="标题" prop="title">
           <Input v-model="form.title" placeholder="请输入..." />
         </FormItem>
@@ -41,12 +38,6 @@
         </FormItem>
         <FormItem label="顺序" prop="sort">
           <Input v-model="form.sort" placeholder="请输入..." />
-        </FormItem>
-        <FormItem label="创建时间" prop="createdAt">
-          <Input v-model="form.createdAt" placeholder="请输入..." />
-        </FormItem>
-        <FormItem label="修改时间" prop="updatedAt">
-          <Input v-model="form.updatedAt" placeholder="请输入..." />
         </FormItem>
       </Form>
     </Modal>
@@ -101,14 +92,6 @@
           {
             title: '顺序',
             key: 'sort'
-          },
-          {
-            title: '创建时间',
-            key: 'createdAt'
-          },
-          {
-            title: '修改时间',
-            key: 'updatedAt'
           },
           {
             title: '操作',
