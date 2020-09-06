@@ -5,7 +5,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
     entry: {
         main: './src/main',
-        vendors: './src/vendors'
+        vendors: './src/vendors',
+        enums: './src/utils/enums',
     },
     output: {
         path: path.join(__dirname, './dist')
