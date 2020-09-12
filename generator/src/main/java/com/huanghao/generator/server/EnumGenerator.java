@@ -1,14 +1,25 @@
 package com.huanghao.generator.server;
 
 
+import com.huanghao.generator.util.DbUtil;
+import com.huanghao.generator.util.EnumDto;
+import com.huanghao.generator.util.Field;
+import com.huanghao.generator.util.FreemarkerUtil;
 import com.huanghao.server.util.GetClassFromPackageUtil;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @author HuangHao
@@ -16,13 +27,21 @@ import java.util.regex.Pattern;
  */
 public class EnumGenerator {
 
-    static String path = "admin\\src\\utils\\enums.js";
+    static String toJsPath = "admin\\src\\utils\\enums.js";
+    static String toJavaPath = "server\\src\\main\\java\\com\\huanghao\\server\\enums\\commons\\";
     static String enumPackageName = "com.huanghao.server.enums.commons";
+    static String generatorConfigPath = "server\\src\\main\\resources\\generator\\generatorConfig.xml";
 
     public static void main(String[] args) {
         StringBuffer buffer = new StringBuffer();
         long begin = System.currentTimeMillis();
         try {
+            // 先执行java文件生成
+            System.out.println("生成后端Enums文件 - go");
+            writeJavaEnums();
+            System.out.println("生成后端Enums文件 - end");
+
+            // 再根据java生成的enum信息来生成js
             System.out.println("生成前端Enums文件 - go");
             List<Class> classList = GetClassFromPackageUtil.getClassFromPackage(enumPackageName);
             for (Class clazz : classList) {
@@ -30,12 +49,79 @@ public class EnumGenerator {
                 toJson(clazz, buffer);
             }
             writeJs(buffer);
+            System.out.println("生成前端Enums文件 - end");
         } catch (Exception e) {
             e.printStackTrace();
         }
         long end = System.currentTimeMillis();
-        System.out.println("生成前端Enums文件 - end");
-        System.out.println("执行耗时:" + (end - begin) + " 毫秒");
+        System.out.println("前后端enum文件生成完毕，执行耗时:" + (end - begin) + " 毫秒");
+    }
+
+    private static void writeJavaEnums() throws Exception {
+        // 只生成配置文件中的第一个table节点
+        File file = new File(generatorConfigPath);
+        SAXReader reader=new SAXReader();
+        //读取xml文件到Document中
+        Document doc=reader.read(file);
+        //获取xml文件的根节点
+        Element rootElement=doc.getRootElement();
+        //读取context节点
+        Element contextElement = rootElement.element("context");
+        //定义一个Element用于遍历
+        Element tableElement;
+        //取第一个“table”的节点
+        tableElement = contextElement.elementIterator("table").next();
+        String tableName = tableElement.attributeValue("tableName");
+
+        List<Field> fieldList = DbUtil.getColumnByTableName(tableName);
+
+        if (CollectionUtils.isEmpty(fieldList)) {
+            return;
+        }
+
+        fieldList = fieldList.stream()
+                .filter(field -> !StringUtils.isEmpty(field.getEnumsComment()) && !StringUtils.isEmpty(field.getEnumsName()))
+                .collect(Collectors.toList());
+        for (Field field : fieldList) {
+            List<EnumDto> enumDtoList = toEnumDtoList(field);
+            String enumName = field.getEnumsName();
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("enumList", enumDtoList);
+            map.put("enumName", enumName);
+
+            // Enum
+            FreemarkerUtil.initConfig("enum.ftl");
+            FreemarkerUtil.generator(toJavaPath + enumName + ".java", map);
+        }
+
+
+
+    }
+
+    /**
+     * 例如：ONE("1", "初级")|TWO("2", "中级")|THREE("3", "高级")
+     * @param field 主要是为了获取EnumsComment
+     * @return 已转变过的EnumDtoList
+     */
+    private static List<EnumDto> toEnumDtoList(Field field) {
+        List<EnumDto> result = new ArrayList<>();
+
+        String enumsComment = field.getEnumsComment();
+        String[] splitArray = enumsComment.split("\\|");
+        for (String item : splitArray) {
+            int nameStart = item.indexOf("(");
+            String name = item.substring(0, nameStart).toUpperCase();
+            int valueStart = nameStart + 2;
+            int valueEnd = item.indexOf(",") - 1;
+            String value = item.substring(valueStart, valueEnd);
+            int labelStart = item.lastIndexOf("\"") + 1;
+            String label = item.substring(labelStart);
+            EnumDto enumDto = new EnumDto(name, value, label);
+            result.add(enumDto);
+        }
+
+        return result;
     }
 
     private static void toJson(Class clazz, StringBuffer buffer) throws Exception {
@@ -72,7 +158,7 @@ public class EnumGenerator {
     public static void writeJs(StringBuffer stringBuffer) {
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(path);
+            out = new FileOutputStream(toJsPath);
             OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8");
 //            System.out.println(path);
             osw.write(stringBuffer.toString());

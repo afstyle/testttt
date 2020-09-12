@@ -11,7 +11,9 @@ public class Field {
     private Boolean nullAble; // 是否可为空
     private Integer length; // 字符串长度
     private Boolean enums; // 是否是枚举
-    private String enumsConst; // 枚举常量 COURSE_LEVEL
+    private String enumsName; // 枚举常量全称 CourseLevelEnum
+    private String enumsConst; // 枚举常量下划线 COURSE_LEVEL
+    private String enumsComment; // 枚举信息 ONE("1","初级"),TWO("2","中级"),THREE("3","高级")
 
     public String getName() {
         return name;
@@ -101,6 +103,22 @@ public class Field {
         this.enumsConst = enumsConst;
     }
 
+    public String getEnumsComment() {
+        return enumsComment;
+    }
+
+    public void setEnumsComment(String enumsComment) {
+        this.enumsComment = enumsComment;
+    }
+
+    public String getEnumsName() {
+        return enumsName;
+    }
+
+    public void setEnumsName(String enumsName) {
+        this.enumsName = enumsName;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Field{");
@@ -114,7 +132,9 @@ public class Field {
         sb.append(", nullAble=").append(nullAble);
         sb.append(", length=").append(length);
         sb.append(", enums=").append(enums);
+        sb.append(", enumsName='").append(enumsName).append('\'');
         sb.append(", enumsConst='").append(enumsConst).append('\'');
+        sb.append(", enumsComment='").append(enumsComment).append('\'');
         sb.append('}');
         return sb.toString();
     }

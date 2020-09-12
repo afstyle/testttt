@@ -1,5 +1,7 @@
 package com.huanghao.generator.util;
 
+import com.huanghao.generator.server.EnumGenerator;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,15 +86,25 @@ public class DbUtil {
                 } else {
                     field.setLength(0);
                 }
-                if (comment.contains("枚举")) {
-                    /*field.setEnums(true);
+                if (comment.contains("|枚举")) {
+                    field.setEnums(true);
 
-                    // 以课程等级为例：从注释中的“枚举[CourseLevelEnum]”，得到COURSE_LEVEL
                     int start = comment.indexOf("[");
                     int end = comment.indexOf("]");
                     String enumsName = comment.substring(start + 1, end);
+
+                    // 枚举全称
+                    field.setEnumsName(enumsName);
+
+                    // 以课程等级为例：从注释中的“枚举[CourseLevelEnum]”，得到COURSE_LEVEL
                     String enumsConst = EnumGenerator.toUnderline(enumsName);
-                    field.setEnumsConst(enumsConst);*/
+                    field.setEnumsConst(enumsConst);
+
+                    // 自动生成Java的Enum，以课程等级为例：从注释中获取“{}”符号并开始做切割以
+                    start = comment.indexOf("{");
+                    end = comment.indexOf("}");
+                    String enumsComment = comment.substring(start + 1, end);
+                    field.setEnumsComment(enumsComment);
                 } else {
                     field.setEnums(false);
                 }

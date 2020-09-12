@@ -1,4 +1,4 @@
--- 测试表
+-- 测试表 ----------------------------------------------
 
 drop table if exists `test`;
 create table `test`
@@ -15,7 +15,7 @@ insert into `test` (id, name)
 values (2, '测试2');
 
 
--- 大章表
+-- 大章表 ----------------------------------------------
 drop table if exists `chapter`;
 create table `chapter`
 (
@@ -56,7 +56,7 @@ insert into `chapter` (id, course_id, name)
 values ('00000013', '0000000', '测试大章13');
 
 
--- 小节
+-- 小节 ----------------------------------------------
 drop table if exists `section`;
 create table `section`
 (
@@ -81,7 +81,7 @@ insert into `section` (id, title, course_id, chapter_id, video, time, charge, so
 values ('00000001', '测试小节01', '00000001', '00000000', '', 500, 'f', 1, now(), now());
 
 
--- 课程
+-- 课程 ----------------------------------------------
 drop table if exists `course`;
 create table `course`
 (
@@ -91,9 +91,9 @@ create table `course`
     time       int                  default 0 comment '时长|单位秒',
     price      decimal(8, 2)        default 0.00 comment '价格（元）',
     image      varchar(100) comment '封面',
-    level      char(1) comment '级别|枚举[CourseLevelEnum]：ONE("1", "初级"),TWO("2", "中级"),THREE("3", "高级")',
-    charge     char(1) comment '收费|枚举[CourseChargeEnum]：CHARGE("C", "收费"),FREE("F", "免费")',
-    status     char(1) comment '状态|枚举[CourseStatusEnum]：PUBLISH("P", "发布"),DRAFT("D", "草稿")',
+    level      char(1) comment '级别|枚举[CourseLevelEnum]：{ONE("1", "初级")|TWO("2", "中级")|THREE("3", "高级")}',
+    charge     char(1) comment '收费|枚举[CourseChargeEnum]：{CHARGE("C", "收费")|FREE("F", "免费")}',
+    status     char(1) comment '状态|枚举[CourseStatusEnum]：{PUBLISH("P", "发布")|DRAFT("D", "草稿")}',
     enroll     integer              default 0 comment '报名数',
     sort       int comment '顺序',
     created_at datetime(3) comment '创建时间',
