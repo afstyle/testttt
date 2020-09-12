@@ -4,7 +4,8 @@ public enum CourseLevelEnum {
 
     ONE("1", "初级"),
     TWO("2", "中级"),
-    THREE("3", "高级");
+    THREE("3", "高级"),
+    ;
 
     private String value;
 

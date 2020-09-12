@@ -112,11 +112,14 @@ public class EnumGenerator {
         for (String item : splitArray) {
             int nameStart = item.indexOf("(");
             String name = item.substring(0, nameStart).toUpperCase();
-            int valueStart = nameStart + 2;
-            int valueEnd = item.indexOf(",") - 1;
+            int valueStart = item.indexOf("\"");
+            int valueEnd = item.indexOf(",");
             String value = item.substring(valueStart, valueEnd);
-            int labelStart = item.lastIndexOf("\"") + 1;
-            String label = item.substring(labelStart);
+            // 去掉除label外的文字
+            String labelAll = item.substring(valueEnd + 1).trim();
+            int labelStart = labelAll.indexOf("\"");
+            int labelEnd = labelAll.indexOf(")");
+            String label = labelAll.substring(labelStart, labelEnd);
             EnumDto enumDto = new EnumDto(name, value, label);
             result.add(enumDto);
         }

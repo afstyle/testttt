@@ -13,13 +13,13 @@
         <Button type="error" size="small" @click="deletes(row.id)">删 除</Button>
       </template>
       <template slot-scope="{ row, index }" slot="level">
-        {{option.level | optionTurn(row.level)}}
+        {{options.level | optionTurn(row.level)}}
       </template>
       <template slot-scope="{ row, index }" slot="charge">
-        {{option.charge | optionTurn(row.charge)}}
+        {{options.charge | optionTurn(row.charge)}}
       </template>
       <template slot-scope="{ row, index }" slot="status">
-        {{option.status | optionTurn(row.status)}}
+        {{options.status | optionTurn(row.status)}}
       </template>
     </Table>
     <Pagination ref="page" v-bind:list="list" />
@@ -44,17 +44,17 @@
         </FormItem>
         <FormItem label="级别" prop="level">
           <Select v-model="form.level">
-            <Option v-for="item in option.level" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Option v-for="item in options.level" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
         <FormItem label="收费" prop="charge">
           <Select v-model="form.charge">
-            <Option v-for="item in option.charge" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Option v-for="item in options.charge" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
         <FormItem label="状态" prop="status">
           <Select v-model="form.status">
-            <Option v-for="item in option.status" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Option v-for="item in options.status" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
         <FormItem label="报名数" prop="enroll">
@@ -155,11 +155,11 @@
             { type: 'string', min: 1, max: 100, message: '填写长度在1~100位', trigger: 'blur' }
           ],
         },
-        option: {
+        options: {
           level: COURSE_LEVEL,
           charge: COURSE_CHARGE,
           status: COURSE_STATUS,
-        }
+        },
       }
     },
     methods: {

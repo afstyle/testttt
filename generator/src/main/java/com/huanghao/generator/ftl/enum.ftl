@@ -3,11 +3,9 @@ package com.huanghao.server.enums.commons;
 public enum ${enumName} {
 
     <#list enumList as enum>
-    ${enum.name}("${enum.value}", "${enum.label}"),
+    ${enum.name}(${enum.value}, ${enum.label}),
     </#list>
     ;
-    CHARGE("C", "收费"),
-    FREE("F", "免费");
 
     private String value;
 

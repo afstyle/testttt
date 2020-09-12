@@ -3,7 +3,8 @@ package com.huanghao.server.enums.commons;
 public enum CourseStatusEnum {
 
     PUBLISH("P", "发布"),
-    DRAFT("D", "草稿");
+    DRAFT("D", "草稿"),
+    ;
 
     private String value;
 

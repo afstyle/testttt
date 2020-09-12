@@ -11,7 +11,10 @@
       <template slot-scope="{ row, index }" slot="action">
         <Button type="primary" size="small" @click="get(row.id)" style="margin-right: 5px">修 改</Button>
         <Button type="error" size="small" @click="deletes(row.id)">删 除</Button>
-      </template>
+      </template><#list fieldList as field><#if field.enums>
+      <template slot-scope="{ row, index }" slot="${field.nameHump}">
+        {{options.${field.nameHump} | optionTurn(row.${field.nameHump})}}
+      </template></#if></#list>
     </Table>
     <Pagination ref="page" v-bind:list="list" />
 
@@ -19,7 +22,13 @@
     <Modal v-model="formModal" :mask-closable="false" :loading="modalLoading" :ok-text="form && form.id ? '保存' : '新增'" :title="form && form.id ? '修改' : '新增'" @on-ok="formValidate">
       <Form ref="form" :model="form" :rules="rule" :label-width="80"><#list fieldList as field><#if field.nameHump != "id" && field.nameHump != "createdAt" && field.nameHump != "updatedAt">
         <FormItem label="${field.nameCn}" prop="${field.nameHump}">
+          <#if field.enums>
+          <Select v-model="form.${field.nameHump}">
+            <Option v-for="item in options.${field.nameHump}" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+          <#else>
           <Input v-model="form.${field.nameHump}" placeholder="请输入..." />
+          </#if>
         </FormItem></#if></#list>
       </Form>
     </Modal>
@@ -47,7 +56,11 @@
           <#if field.nameHump != 'createdAt' && field.nameHump != 'updatedAt'>
           {
             title: '${field.nameCn}',
+            <#if field.enums>
+            slot: '${field.nameHump}'
+            <#else>
             key: '${field.nameHump}'
+            </#if>
           },
           </#if>
           </#list>
@@ -77,7 +90,13 @@
           </#if>
           </#list>
         },
-        options: {},
+        options: {
+          <#list fieldList as field>
+          <#if field.enums>
+          ${field.nameHump}: ${field.enumsConst},
+          </#if>
+          </#list>
+        },
       }
     },
     methods: {

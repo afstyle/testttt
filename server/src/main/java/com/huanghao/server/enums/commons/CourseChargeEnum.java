@@ -3,7 +3,8 @@ package com.huanghao.server.enums.commons;
 public enum CourseChargeEnum {
 
     CHARGE("C", "收费"),
-    FREE("F", "免费");
+    FREE("F", "免费"),
+    ;
 
     private String value;
 

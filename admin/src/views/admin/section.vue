@@ -13,7 +13,7 @@
         <Button type="error" size="small" @click="deletes(row.id)">删 除</Button>
       </template>
       <template slot-scope="{ row, index }" slot="charge">
-        {{option.charge | optionTurn(row.charge)}}
+        {{options.charge | optionTurn(row.charge)}}
       </template>
     </Table>
     <Pagination ref="page" v-bind:list="list" />
@@ -38,7 +38,7 @@
         </FormItem>
         <FormItem label="收费" prop="charge">
           <Select v-model="form.charge">
-            <Option v-for="item in option.charge" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Option v-for="item in options.charge" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
         <FormItem label="顺序" prop="sort">
@@ -121,8 +121,8 @@
             { type: 'string', min: 1, max: 200, message: '填写长度在1~200位', trigger: 'blur' }
           ],
         },
-        option: {
-            charge: SECTION_CHARGE,
+        options: {
+          charge: SECTION_CHARGE,
         },
       }
     },
